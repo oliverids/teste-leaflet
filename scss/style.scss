@@ -1,4 +1,3 @@
-@import "../node_modules/ol/ol.css";
 @import url('https://fonts.googleapis.com/css2?family=Archivo+Narrow:ital,wght@0,500;0,600;1,400&family=Inter&display=swap');
 
 $narrow: 'Archivo Narrow', sans-serif;
@@ -24,5 +23,28 @@ $inter: 'Inter', sans-serif;
 
 #map {
     width: 100%;
-    height: 400px;
+    height: 360px;
+
+    .leaflet-popup-content-wrapper,
+    .leaflet-popup-tip {
+        background: white;
+        color: #202020;
+        box-shadow: 0 3px 14px rgba(0, 0, 0, 0.2);
+        text-align: center;
+
+        .leaflet-popup-content a {
+            color: #202020;
+            text-decoration: none;
+        }
+    }
+}
+
+#about {
+    .secao-uni {
+        display: none;
+
+        &.ativo {
+            display: block;
+        }
+    }
 }
