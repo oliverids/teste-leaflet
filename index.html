@@ -9,18 +9,26 @@
   <title>Universidades por aí</title>
 
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
-  integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI="
-  crossorigin=""/>
+    integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI=" crossorigin="" />
+    
   <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
-  integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM="
-  crossorigin=""></script>
+    integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM=" crossorigin=""></script>
+    <script src="https://unpkg.com/leaflet.markercluster@1.3.0/dist/leaflet.markercluster.js"></script>
 </head>
 
 <body>
   <main>
     <div class="container">
       <h1>Universidades por aí</h1>
-      <div id="map"></div>
+
+      <section id="map-nav">
+        <div class="cta">
+          <button id="universidades" class="ativo">Universidades</button>
+          <button id="users">Pesquisadores</button>
+        </div>
+        <div id="map"></div>
+
+      </section>
 
       <section id="about">
 
