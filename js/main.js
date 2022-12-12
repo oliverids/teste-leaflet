@@ -1,20 +1,8 @@
-const universidades = await fetch('https://deno-api-fake.deno.dev/api/universidade').then(r => r.json()),
-    users = await fetch('https://deno-api-fake.deno.dev/api/users').then(r => r.json());
+import { universidades, users, createIcon, clickMapOverlay } from "./_functions.js";
 
 let popupContent;
 
 const secaoAbout = document.querySelector('#about .container');
-
-function createIcon(icon) {
-    let markerIcon = L.icon({
-        iconUrl: `public/img/${icon}.png`,
-        iconSize: [30, 43], // size of the icon
-        iconAnchor: [16, 41], // point of the icon which will correspond to marker's location
-        popupAnchor: [15, -90] // point from which the popup should open relative to the iconAnchor
-    });
-
-    return markerIcon;
-}
 
 //UNIVERSIDADES FETCH
 let uniArray = [];
@@ -85,7 +73,7 @@ map1.on('popupopen', function (e) {
     setTimeout(() => ChosenSection.scrollIntoView({ block: "start", behavior: "smooth" }), 10);
 });
 
-const tiles = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 12,
     attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 }).addTo(map1);
@@ -98,34 +86,6 @@ const overlayMaps = {
     "Pesquisadores": userLayer
 }
 
-let layerControl = L.control.layers(overlayMaps);
-
-function clickMapOverlay(botao1, botao2, layer1, layer2, map,) {
-    const btn1 = document.getElementById(botao1),
-        btn2 = document.getElementById(botao2);
-
-    [btn1, btn2].forEach(each => {
-        each.addEventListener('click', e => {
-            if (each == btn1) {
-                btn2.classList.remove('ativo');
-                btn1.classList.add('ativo');
-                map.removeLayer(layer2)
-                map.addLayer(layer1)
-
-            } else {
-                btn1.classList.remove('ativo');
-                btn2.classList.add('ativo');
-                map.removeLayer(layer1)
-                map.addLayer(layer2)
-            }
-        })
-    })
-}
+L.control.layers(overlayMaps);
 
 clickMapOverlay('universidades', 'users', uniLayer, userLayer, map1);
-
-// clickMapOverlay('universidades', 'users', uniLayer, userLayer, map1);
-
-
-
-
