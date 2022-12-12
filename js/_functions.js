@@ -2,6 +2,7 @@ export const universidades = await fetch('https://deno-api-fake.deno.dev/api/uni
 
 export const users = await fetch('https://deno-api-fake.deno.dev/api/users').then(r => r.json());
 
+export const zonas = await fetch('./ZonasData.json').then(r => r.json());
 
 export function createIcon(icon) {
     let markerIcon = L.icon({
@@ -14,26 +15,27 @@ export function createIcon(icon) {
     return markerIcon;
 }
 
-export function clickMapOverlay(botao1, botao2, layer1, layer2, map,) {
-    const btn1 = document.getElementById(botao1),
-        btn2 = document.getElementById(botao2);
-
-    [btn1, btn2].forEach(each => {
-        each.addEventListener('click', e => {
-            if (each == btn1) {
-                btn2.classList.remove('ativo');
-                btn1.classList.add('ativo');
-                map.removeLayer(layer2)
-                map.addLayer(layer1)
-
-            } else {
-                btn1.classList.remove('ativo');
-                btn2.classList.add('ativo');
-                map.removeLayer(layer1)
-                map.addLayer(layer2)
-            }
-        })
+export function selectMap() {
+    const selectOptions = document.getElementById('selectOptions');
+    selectOptions.addEventListener('change', () => {
+        let selectedOverlay = selectOptions.value;
+    
+        switch (true) {
+            case selectedOverlay == 'users':
+                map.removeLayer(uniLayer)
+                map.addLayer(userLayer)
+                break;
+        
+            case selectedOverlay == 'universidades': 
+                map.removeLayer(userLayer)
+                map.addLayer(uniLayer)
+            break;
+    
+            default:
+                break;
+        }
+    
     })
 }
 
-export default { universidades, users, createIcon, clickMapOverlay}
+export default { universidades, users, zonas, createIcon, selectMap}

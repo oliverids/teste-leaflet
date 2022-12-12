@@ -1,4 +1,5 @@
-import { universidades, users, createIcon, clickMapOverlay } from "./_functions.js";
+import { universidades, users, zonas, createIcon, selectMap } from "./_functions.js";
+
 
 let popupContent;
 
@@ -25,8 +26,6 @@ for (let i = 0; i < universidades.length; i++) {
     secaoAbout.appendChild(uniSection);
 }
 const uniLayer = L.layerGroup([...uniArray]);
-
-// console.log(L.Icon.Default.prototype.options)
 
 //USERS FETCH
 let userArray = [];
@@ -55,13 +54,45 @@ for (let i = 0; i < users.length; i++) {
 }
 const userLayer = L.layerGroup([...userArray]);
 
-const map1 = L.map('map1', {
+//ZONAS DE CRESCIMENTO
+let ZonasArray = [];
+
+for(let i = 0; i < zonas.length; i++) {
+    popupContent = `<a href="#${zonas[i].nome}"><h2>${zonas[i].nome}</h2></a>`;
+
+    let circle = L.circle([zonas[i].lat, zonas[i].lng], {
+        color: '#822AB2',
+        fillColor: '#822AB2',
+        fillOpacity: 0.5,
+        radius: zonas[i].radius
+    }).bindPopup(popupContent);
+    ZonasArray.push(circle);
+
+    let uniSection = document.createElement('section');
+    uniSection.id = `#${zonas[i].nome}`;
+    uniSection.classList.add('secao-uni');
+    uniSection.innerHTML = `
+        <h2>${zonas[i].nome}</h2>
+        <p>Aqui terão informações sobre a ${zonas[i].nome}.</p>
+      `;
+    secaoAbout.appendChild(uniSection);
+}
+
+const ZonasLayer = L.layerGroup([...ZonasArray]);
+
+// const polygon = L.polygon([
+//   [51.509, -0.08],
+//   [51.503, -0.06],
+//   [51.51, -0.047]
+// ]).addTo(map).bindPopup('I am a polygon.');
+
+const map = L.map('map', {
     center: [-20.32, -40.33],
     zoom: 4,
-    layers: [uniLayer, userLayer]
+    layers: [uniLayer, userLayer, ZonasLayer]
 });
 
-map1.on('popupopen', function (e) {
+map.on('popupopen', function (e) {
     var marker = e.popup._source._popup._content,
         anchor = marker.substring(
             marker.indexOf('"') + 1,
@@ -76,16 +107,49 @@ map1.on('popupopen', function (e) {
 L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 12,
     attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-}).addTo(map1);
+}).addTo(map);
 
-uniLayer.addTo(map1); //layer inicial a ser mostrada
-map1.removeLayer(userLayer) // layer a ser escondida inicialmente
+uniLayer.addTo(map); //layer inicial a ser mostrada
+map.removeLayer(userLayer) // layer a ser escondida inicialmente
+map.removeLayer(ZonasLayer) // layer a ser escondida inicialmente
 
 const overlayMaps = {
     "Universidades": uniLayer,
-    "Pesquisadores": userLayer
+    "Pesquisadores": userLayer,
+    'Zonas de Crescimento': ZonasLayer
 }
 
 L.control.layers(overlayMaps);
 
-clickMapOverlay('universidades', 'users', uniLayer, userLayer, map1);
+// clickMapOverlay('universidades', 'users', uniLayer, userLayer, map);
+
+// selectMap()
+
+const selectOptions = document.getElementById('selectOptions');
+selectOptions.addEventListener('change', () => {
+    let selectedOverlay = selectOptions.value;
+
+    switch (true) {
+        case selectedOverlay == 'users':
+            map.removeLayer(uniLayer)
+            map.removeLayer(ZonasLayer)
+            map.addLayer(userLayer)
+            break;
+
+        case selectedOverlay == 'universidades':
+            map.removeLayer(userLayer)
+            map.removeLayer(ZonasLayer)
+            map.addLayer(uniLayer)
+            break;
+
+        case selectedOverlay == 'zonas':
+            map.removeLayer(userLayer)
+            map.removeLayer(uniLayer)
+            map.addLayer(ZonasLayer)
+            break;
+
+        default:
+            break;
+    }
+
+})

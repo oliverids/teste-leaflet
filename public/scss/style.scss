@@ -4,30 +4,20 @@
     .container {
         flex-direction: column;
 
-        .cta {
-            display: flex;
-            justify-content: space-between;
-            background: #eee;
-            border-radius: 1rem;
-            overflow: hidden;
-            margin-bottom: 1rem;
+        .select-div {
+            margin: 0 auto 1rem;
+            border: 1px solid #20202077;
+            width: 100%;
+            max-width: 20rem;
 
-            button {
-                width: 49%;
-                font-size: 1.1rem;
-                padding: 0.8rem;
-                font-weight: 600;
-                transition: .3s ease-in-out;
-
-                &.ativo {
-                    background: #404040;
-                    color: #fff;
-                    transition: .3s ease-in-out;
-                }
+            select {
+                width: 100%;
+                font-size: 1rem;
+                padding: .7rem 1rem;
             }
         }
 
-        #map1, #map2 {
+        #map {
             width: 100%;
             height: 360px;
             margin-bottom: 2rem;
