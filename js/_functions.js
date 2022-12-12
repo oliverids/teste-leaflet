@@ -4,6 +4,8 @@ export const users = await fetch('https://deno-api-fake.deno.dev/api/users').the
 
 export const zonas = await fetch('./ZonasData.json').then(r => r.json());
 
+export const macros = await fetch('./MacrosData.json').then(r => r.json());
+
 export function createIcon(icon) {
     let markerIcon = L.icon({
         iconUrl: `public/img/${icon}.png`,
@@ -38,4 +40,4 @@ export function selectMap() {
     })
 }
 
-export default { universidades, users, zonas, createIcon, selectMap}
+export default { universidades, users, zonas, macros, createIcon, selectMap}
