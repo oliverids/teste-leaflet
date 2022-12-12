@@ -5,13 +5,26 @@ let popupContent;
 
 const secaoAbout = document.querySelector('#about .container');
 
+function createIcon(icon) {
+    let markerIcon = L.icon({
+        iconUrl: `public/img/${icon}.png`,
+        iconSize:     [30, 43], // size of the icon
+        iconAnchor:   [16, 41], // point of the icon which will correspond to marker's location
+        popupAnchor:  [15, -90] // point from which the popup should open relative to the iconAnchor
+    });
+
+    return markerIcon;
+}
+
 //UNIVERSIDADES FETCH
 let uniArray = [];
 
 for (let i = 0; i < universidades.length; i++) {
     popupContent = `<a href="#${universidades[i].nome}"><h2>${universidades[i].nome}</h2></a>`;
+    
+    let uniIcon = createIcon('uni');
 
-    let marker = L.marker([universidades[i].lat, universidades[i].lon]).bindPopup(popupContent);
+    let marker = L.marker([universidades[i].lat, universidades[i].lon], {icon: uniIcon}).bindPopup(popupContent);
     uniArray.push(marker);
 
     let uniSection = document.createElement('section');
@@ -25,13 +38,17 @@ for (let i = 0; i < universidades.length; i++) {
 }
 const uniLayer = L.layerGroup([...uniArray]);
 
+// console.log(L.Icon.Default.prototype.options)
+
 //USERS FETCH
 let userArray = [];
 
 for (let i = 0; i < users.length; i++) {
     popupContent = `<a href="#${users[i].name}"><h2>${users[i].name}</h2></a>`;
 
-    let marker = L.marker([users[i].address.geo.lat, users[i].address.geo.lng]).bindPopup(popupContent);
+    let userIcon = createIcon('user');
+
+    let marker = L.marker([users[i].address.geo.lat, users[i].address.geo.lng], {icon: userIcon}).bindPopup(popupContent);
     userArray.push(marker);
 
     let uniSection = document.createElement('section');
