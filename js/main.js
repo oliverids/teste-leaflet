@@ -85,26 +85,14 @@ let MacrosArray = [];
 for (let i = 0; i < macros.length; i++) {
     popupContent = `<a href="#${macros[i].nome}"><h2>${macros[i].nome}</h2></a>`;
 
-    // for(let ponto = 3; ponto <= Object.keys(macros[i]).length; ponto++) {
-    //     console.log(Object.keys(macros[i]).length);
+    let valueFiltered = Object.values(macros[i]).filter(value => typeof value === 'object'),
+        polygonArray = [];
 
-    //     // const polygon = L.polygon([
-    //     //     [macros[i].ponto1[0], macros[i].ponto1[1]],
-    //     //     [macros[i].ponto2[0], macros[i].ponto2[1]],
-    //     //     [macros[i].ponto3[0], macros[i].ponto3[1]],
-    //     // ]).bindPopup(popupContent);
+    for (let i = 0; i < valueFiltered.length; i++) {
+        polygonArray.push(valueFiltered[i])
+    }
 
-    //     // myObject[ + i] = foo;
-    // }
-
-    // console.log(macros[i].ponto4);
-
-    const polygon = L.polygon([
-        [macros[i].ponto1[0], macros[i].ponto1[1]],
-        [macros[i].ponto2[0], macros[i].ponto2[1]],
-        [macros[i].ponto3[0], macros[i].ponto3[1]],
-        // ... macros[i].ponto4 ? [macros[i].ponto4[0], macros[i].ponto4[1]] : [],
-    ]).bindPopup(popupContent);
+    const polygon = L.polygon(polygonArray).bindPopup(popupContent);
 
     MacrosArray.push(polygon);
 
@@ -118,8 +106,6 @@ for (let i = 0; i < macros.length; i++) {
     secaoAbout.appendChild(uniSection);
 }
 const MacrosLayer = L.layerGroup([...MacrosArray]);
-
-
 
 const map = L.map('map', {
     center: [-20.32, -40.33],
