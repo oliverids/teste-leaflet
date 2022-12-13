@@ -2,7 +2,7 @@
   "name": "leaflet",
   "private": true,
   "version": "0.0.0",
-  "type": "module",
+  "type": "commonjs",
   "scripts": {
     "start": "npm run dev",
     "dev": "vite",
@@ -10,6 +10,8 @@
     "preview": "vite preview"
   },
   "devDependencies": {
+    "gulp": "^4.0.2",
+    "gulp-concat": "^2.6.1",
     "vite": "^3.2.3"
   }
 }

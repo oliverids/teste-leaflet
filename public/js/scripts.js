@@ -1,6 +1,3 @@
-//github aparentemente n tem suporte pra ES modules então fiz um arquivo inteirão
-//isso ou eu fiz merda
-
 export const universidades = await fetch('https://deno-api-fake.deno.dev/api/universidade').then(r => r.json());
 
 export const users = await fetch('https://deno-api-fake.deno.dev/api/users').then(r => r.json());
@@ -90,7 +87,6 @@ for (let i = 0; i < users.length; i++) {
         <p><strong>Telefone:</strong> ${users[i].phone}</p>
         <p><strong>Website:</strong> ${users[i].website}</p>
         <p><strong>Empresa:</strong> ${users[i].company.name}</p>
-
       `;
     secaoAbout.appendChild(uniSection);
 }
@@ -127,26 +123,14 @@ let MacrosArray = [];
 for (let i = 0; i < macros.length; i++) {
     popupContent = `<a href="#${macros[i].nome}"><h2>${macros[i].nome}</h2></a>`;
 
-    // for(let ponto = 3; ponto <= Object.keys(macros[i]).length; ponto++) {
-    //     console.log(Object.keys(macros[i]).length);
+    let valueFiltered = Object.values(macros[i]).filter(value => typeof value === 'object'),
+        polygonArray = [];
 
-    //     // const polygon = L.polygon([
-    //     //     [macros[i].ponto1[0], macros[i].ponto1[1]],
-    //     //     [macros[i].ponto2[0], macros[i].ponto2[1]],
-    //     //     [macros[i].ponto3[0], macros[i].ponto3[1]],
-    //     // ]).bindPopup(popupContent);
+    for (let i = 0; i < valueFiltered.length; i++) {
+        polygonArray.push(valueFiltered[i])
+    }
 
-    //     // myObject[ + i] = foo;
-    // }
-
-    // console.log(macros[i].ponto4);
-
-    const polygon = L.polygon([
-        [macros[i].ponto1[0], macros[i].ponto1[1]],
-        [macros[i].ponto2[0], macros[i].ponto2[1]],
-        [macros[i].ponto3[0], macros[i].ponto3[1]],
-        // ... macros[i].ponto4 ? [macros[i].ponto4[0], macros[i].ponto4[1]] : [],
-    ]).bindPopup(popupContent);
+    const polygon = L.polygon(polygonArray).bindPopup(popupContent);
 
     MacrosArray.push(polygon);
 
@@ -160,8 +144,6 @@ for (let i = 0; i < macros.length; i++) {
     secaoAbout.appendChild(uniSection);
 }
 const MacrosLayer = L.layerGroup([...MacrosArray]);
-
-
 
 const map = L.map('map', {
     center: [-20.32, -40.33],
@@ -187,9 +169,7 @@ L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
 }).addTo(map);
 
 uniLayer.addTo(map); //layer inicial a ser mostrada
-map.removeLayer(userLayer) // layer a ser escondida inicialmente
-map.removeLayer(ZonasLayer) // layer a ser escondida inicialmente
-map.removeLayer(MacrosLayer) // layer a ser escondida inicialmente
+[userLayer, ZonasLayer, MacrosLayer].forEach(each => map.removeLayer(each)); // layers a serem escondidas inicialmente
 
 const overlayMaps = {
     "Universidades": uniLayer,
@@ -200,40 +180,28 @@ const overlayMaps = {
 
 L.control.layers(overlayMaps);
 
-// clickMapOverlay('universidades', 'users', uniLayer, userLayer, map);
-
-// selectMap()
-
 const selectOptions = document.getElementById('selectOptions');
 selectOptions.addEventListener('change', () => {
     let selectedOverlay = selectOptions.value;
 
     switch (true) {
         case selectedOverlay == 'users':
-            map.removeLayer(uniLayer)
-            map.removeLayer(ZonasLayer)
-            map.removeLayer(MacrosLayer)
+            [uniLayer, ZonasLayer, MacrosLayer].forEach(each => map.removeLayer(each));
             map.addLayer(userLayer)
             break;
 
         case selectedOverlay == 'universidades':
-            map.removeLayer(userLayer)
-            map.removeLayer(ZonasLayer)
-            map.removeLayer(MacrosLayer)
+            [userLayer, ZonasLayer, MacrosLayer].forEach(each => map.removeLayer(each));
             map.addLayer(uniLayer)
             break;
 
         case selectedOverlay == 'zonas':
-            map.removeLayer(userLayer)
-            map.removeLayer(uniLayer)
-            map.removeLayer(MacrosLayer)
+            [userLayer, uniLayer, MacrosLayer].forEach(each => map.removeLayer(each));
             map.addLayer(ZonasLayer)
             break;
 
         case selectedOverlay == 'macros':
-            map.removeLayer(userLayer)
-            map.removeLayer(uniLayer)
-            map.removeLayer(ZonasLayer)
+            [userLayer, uniLayer, ZonasLayer].forEach(each => map.removeLayer(each));
             map.addLayer(MacrosLayer)
             break;
 

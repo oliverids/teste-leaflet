@@ -48,7 +48,6 @@ for (let i = 0; i < users.length; i++) {
         <p><strong>Telefone:</strong> ${users[i].phone}</p>
         <p><strong>Website:</strong> ${users[i].website}</p>
         <p><strong>Empresa:</strong> ${users[i].company.name}</p>
-
       `;
     secaoAbout.appendChild(uniSection);
 }
@@ -131,9 +130,7 @@ L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
 }).addTo(map);
 
 uniLayer.addTo(map); //layer inicial a ser mostrada
-map.removeLayer(userLayer) // layer a ser escondida inicialmente
-map.removeLayer(ZonasLayer) // layer a ser escondida inicialmente
-map.removeLayer(MacrosLayer) // layer a ser escondida inicialmente
+[userLayer, ZonasLayer, MacrosLayer].forEach(each => map.removeLayer(each)); // layers a serem escondidas inicialmente
 
 const overlayMaps = {
     "Universidades": uniLayer,
@@ -144,40 +141,28 @@ const overlayMaps = {
 
 L.control.layers(overlayMaps);
 
-// clickMapOverlay('universidades', 'users', uniLayer, userLayer, map);
-
-// selectMap()
-
 const selectOptions = document.getElementById('selectOptions');
 selectOptions.addEventListener('change', () => {
     let selectedOverlay = selectOptions.value;
 
     switch (true) {
         case selectedOverlay == 'users':
-            map.removeLayer(uniLayer)
-            map.removeLayer(ZonasLayer)
-            map.removeLayer(MacrosLayer)
+            [uniLayer, ZonasLayer, MacrosLayer].forEach(each => map.removeLayer(each));
             map.addLayer(userLayer)
             break;
 
         case selectedOverlay == 'universidades':
-            map.removeLayer(userLayer)
-            map.removeLayer(ZonasLayer)
-            map.removeLayer(MacrosLayer)
+            [userLayer, ZonasLayer, MacrosLayer].forEach(each => map.removeLayer(each));
             map.addLayer(uniLayer)
             break;
 
         case selectedOverlay == 'zonas':
-            map.removeLayer(userLayer)
-            map.removeLayer(uniLayer)
-            map.removeLayer(MacrosLayer)
+            [userLayer, uniLayer, MacrosLayer].forEach(each => map.removeLayer(each));
             map.addLayer(ZonasLayer)
             break;
 
         case selectedOverlay == 'macros':
-            map.removeLayer(userLayer)
-            map.removeLayer(uniLayer)
-            map.removeLayer(ZonasLayer)
+            [userLayer, uniLayer, ZonasLayer].forEach(each => map.removeLayer(each));
             map.addLayer(MacrosLayer)
             break;
 
