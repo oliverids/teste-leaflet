@@ -1,5 +1,4 @@
-import { universidades, users, zonas, macros, createIcon, selectMap } from "./_functions.js";
-
+import { universidades, users, zonas, macros, createIcon } from "./_functions.js";
 
 let popupContent;
 
@@ -109,6 +108,8 @@ const MacrosLayer = L.layerGroup([...MacrosArray]);
 const map = L.map('map', {
     center: [-20.32, -40.33],
     zoom: 4,
+    minZoom: 1,
+    maxZoom: 12,
     layers: [uniLayer, userLayer, MacrosLayer, ZonasLayer]
 });
 
@@ -169,5 +170,4 @@ selectOptions.addEventListener('change', () => {
         default:
             break;
     }
-
-})
+});
