@@ -6,6 +6,7 @@ const secaoAbout = document.querySelector('#about .container');
 
 //UNIVERSIDADES FETCH
 let uniArray = [];
+const uniLayer = L.markerClusterGroup();
 
 for (let i = 0; i < universidades.length; i++) {
     popupContent = `<a href="#${universidades[i].nome}"><h2>${universidades[i].nome}</h2></a>`;
@@ -14,6 +15,7 @@ for (let i = 0; i < universidades.length; i++) {
 
     let marker = L.marker([universidades[i].lat, universidades[i].lon], { icon: uniIcon }).bindPopup(popupContent);
     uniArray.push(marker);
+    uniLayer.addLayer(marker)
 
     let uniSection = document.createElement('section');
     uniSection.id = `#${universidades[i].nome}`;
@@ -24,10 +26,10 @@ for (let i = 0; i < universidades.length; i++) {
       `;
     secaoAbout.appendChild(uniSection);
 }
-const uniLayer = L.layerGroup([...uniArray]);
 
 //USERS FETCH
 let userArray = [];
+const userLayer = L.markerClusterGroup();
 
 for (let i = 0; i < users.length; i++) {
     popupContent = `<a href="#${users[i].name}"><h2>${users[i].name}</h2></a>`;
@@ -36,6 +38,7 @@ for (let i = 0; i < users.length; i++) {
 
     let marker = L.marker([users[i].address.geo.lat, users[i].address.geo.lng], { icon: userIcon }).bindPopup(popupContent);
     userArray.push(marker);
+    userLayer.addLayer(marker)
 
     let uniSection = document.createElement('section');
     uniSection.id = `#${users[i].name}`;
@@ -50,10 +53,11 @@ for (let i = 0; i < users.length; i++) {
       `;
     secaoAbout.appendChild(uniSection);
 }
-const userLayer = L.layerGroup([...userArray]);
+// const userLayer = L.layerGroup([...userArray]);
 
 //ZONAS DE CRESCIMENTO
 let ZonasArray = [];
+const ZonasLayer = L.markerClusterGroup();
 
 for (let i = 0; i < zonas.length; i++) {
     popupContent = `<a href="#${zonas[i].nome}"><h2>${zonas[i].nome}</h2></a>`;
@@ -65,6 +69,7 @@ for (let i = 0; i < zonas.length; i++) {
         radius: zonas[i].radius
     }).bindPopup(popupContent);
     ZonasArray.push(circle);
+    ZonasLayer.addLayer(circle)
 
     let uniSection = document.createElement('section');
     uniSection.id = `#${zonas[i].nome}`;
@@ -75,10 +80,11 @@ for (let i = 0; i < zonas.length; i++) {
       `;
     secaoAbout.appendChild(uniSection);
 }
-const ZonasLayer = L.layerGroup([...ZonasArray]);
+// const ZonasLayer = L.layerGroup([...ZonasArray]);
 
 //ZONAS DE CRESCIMENTO
 let MacrosArray = [];
+const MacrosLayer = L.markerClusterGroup();
 
 for (let i = 0; i < macros.length; i++) {
     popupContent = `<a href="#${macros[i].nome}"><h2>${macros[i].nome}</h2></a>`;
@@ -93,6 +99,7 @@ for (let i = 0; i < macros.length; i++) {
     const polygon = L.polygon(polygonArray).bindPopup(popupContent);
 
     MacrosArray.push(polygon);
+    MacrosLayer.addLayer(polygon)
 
     let uniSection = document.createElement('section');
     uniSection.id = `#${macros[i].nome}`;
@@ -103,7 +110,7 @@ for (let i = 0; i < macros.length; i++) {
       `;
     secaoAbout.appendChild(uniSection);
 }
-const MacrosLayer = L.layerGroup([...MacrosArray]);
+// const MacrosLayer = L.layerGroup([...MacrosArray]);
 
 const map = L.map('map', {
     center: [-20.32, -40.33],
